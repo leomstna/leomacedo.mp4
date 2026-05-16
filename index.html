@@ -477,7 +477,7 @@
       });
 
       // ─────────────────────────────────────────────────────────────
-      // SMOOTH SCROLL CORRIGIDO PARA OS LINKS DO HEADER
+      // SMOOTH SCROLL CORRIGIDO PARA ENQUADRAMENTO EXATO
       // ─────────────────────────────────────────────────────────────
       document.querySelectorAll('.nav-links a').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
@@ -498,11 +498,15 @@
               const availableHeight = window.innerHeight - headerHeight;
               const centerOffset = (availableHeight - gallery.offsetHeight) / 2;
               
-              offsetPosition = elementPosition + window.pageYOffset - headerHeight - Math.max(0, centerOffset);
+              offsetPosition = elementPosition + window.pageYOffset - headerHeight - (centerOffset > 0 ? centerOffset : 0);
             } else {
-              // Ajuste: Pare o scroll um pouco antes pra não engolir o título no header.
-              // Tirando mais 40px pra dar um respiro visual decente.
-              const elementPosition = targetSection.getBoundingClientRect().top;
+              // Para SYSTEM e ASSETS: 
+              // Mira na div interna '.container' pra ignorar o padding-top de 140px.
+              const innerContainer = targetSection.querySelector('.container');
+              const elementPosition = (innerContainer || targetSection).getBoundingClientRect().top;
+              
+              // O '- 40' deixa exatos 40 pixels de distância entre o header preto e o título branco,
+              // garantindo que não suba demais na tela.
               offsetPosition = elementPosition + window.pageYOffset - headerHeight - 40; 
             }
         
@@ -548,7 +552,7 @@
     });
   </script>
 
-  <!-- WEBGL: DARK VEIL BACKGROUND -->
+  <!-- WEBGL: DARK VEIL BACKGROUND (Adaptado do React Bits) -->
   <script type="module">
     import { Renderer, Program, Mesh, Triangle, Vec2 } from 'https://esm.sh/ogl';
 
