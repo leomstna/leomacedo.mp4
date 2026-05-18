@@ -4,18 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <!-- Ícone da guia do site corrigido -->
   <link rel="icon" type="image/jpeg" href="favicon.jpg" />
   
   <title>leomacedo.mp4 | Creative Editor & Motion Graphics</title>
   <meta name="description" content="Portfolio de Leo Macedo - Edição de vídeo brutal, Motion Graphics e VFX." />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;700;900&family=Space+Mono&display=swap" rel="stylesheet" />
 
-  <!-- GSAP & Plugins -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 
@@ -66,11 +63,28 @@
     nav {
       position: fixed; top: 0; left: 0; width: 100%; height: 100px;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 7.5%; z-index: 1000; mix-blend-mode: difference;
+      padding: 0 7.5%; z-index: 2000; mix-blend-mode: difference;
     }
-    .logo { height: 45px; }
+    .logo { height: 45px; position: relative; z-index: 2001; }
     .nav-links { display: flex; gap: 50px; list-style: none; }
     .nav-links a { color: #fff; text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; }
+
+    /* MENU MOBILE (SANDUÍCHE & OVERLAY) */
+    .menu-toggle {
+      display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2001; padding: 10px;
+    }
+    .menu-toggle span {
+      width: 30px; height: 2px; background: #fff; transition: 0.3s;
+    }
+    .mobile-nav {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-color);
+      z-index: 1500; display: flex; flex-direction: column; justify-content: center; align-items: center;
+      opacity: 0; pointer-events: none; transition: 0.4s ease-in-out;
+    }
+    .mobile-nav.active { opacity: 1; pointer-events: auto; }
+    .mobile-nav-links { list-style: none; text-align: center; display: flex; flex-direction: column; gap: 40px; }
+    .mobile-nav-links a { color: #fff; text-decoration: none; font-size: 2.5rem; font-family: var(--font-display); letter-spacing: 2px; }
+    .mobile-nav-links a:hover { color: var(--accent-color); }
 
     /* ── HERO ───────────────────────────────────────────── */
     #hero {
@@ -78,7 +92,7 @@
       position: relative; overflow: hidden;
     }
     .hero-title {
-      font-family: var(--font-display); font-size: clamp(6rem, 22vw, 16rem);
+      font-family: var(--font-display); font-size: clamp(5rem, 20vw, 16rem);
       line-height: 0.8; position: relative; z-index: 2;
     }
     .hero-title span { display: block; color: var(--accent-color); }
@@ -90,11 +104,11 @@
     /* ── SECTIONS ───────────────────────────────────────── */
     section { padding: var(--section-padding) 0; border-top: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 2;}
     .section-label { font-family: var(--font-code); color: var(--accent-color); margin-bottom: 30px; display: block; letter-spacing: 3px; }
-    h2 { font-family: var(--font-display); font-size: clamp(4rem, 10vw, 7.5rem); text-transform: uppercase; margin-bottom: 60px; line-height: 0.9; }
+    h2 { font-family: var(--font-display); font-size: clamp(3.5rem, 10vw, 7.5rem); text-transform: uppercase; margin-bottom: 60px; line-height: 0.9; }
 
     /* ── SERVICES ───────────────────────────────────────── */
     .services-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
       margin-top: 20px;
     }
     .service-card {
@@ -110,7 +124,7 @@
     /* ── FOLDERS (ASSETS) ───────────────────────────────── */
     .folders-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 60px;
       margin-top: 80px;
       justify-items: center;
@@ -266,13 +280,6 @@
       height: 100%;
     }
 
-    @media (max-width: 992px) {
-      .container { width: 90%; }
-      .nav-links { display: none; }
-      .gallery-wrapper { height: 50vh; min-height: 400px; }
-      .folders-grid { grid-template-columns: 1fr; gap: 80px; }
-    }
-
     /* ── LORE SECTION ───────────────────────────────────── */
     .lore-block {
       background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
@@ -284,16 +291,37 @@
     /* ── FOOTER ─────────────────────────────────────────── */
     footer { padding: 150px 0 60px; text-align: center; position: relative; z-index: 2;}
     .contact-link {
-      font-family: var(--font-display); font-size: clamp(4rem, 12vw, 10rem);
+      font-family: var(--font-display); font-size: clamp(3.5rem, 12vw, 10rem);
       color: #fff; text-decoration: none; transition: 0.4s; line-height: 1;
     }
     .contact-link:hover { color: var(--accent-color); -webkit-text-stroke: 1px #fff; color: transparent; }
+
+    /* ── MEDIA QUERIES (MOBILE FIXES) ────────────────────── */
+    @media (max-width: 992px) {
+      :root {
+        --section-padding: 80px; /* Reduz espaço vazio entre seções */
+      }
+      .container { width: 90%; }
+      .nav-links { display: none; }
+      .menu-toggle { display: flex; } /* Mostra hamburguer */
+      
+      .gallery-wrapper { height: 50vh; min-height: 400px; }
+      
+      /* Ajuste nas pastas pra não quebrar a tela */
+      .folders-grid { grid-template-columns: 1fr; gap: 50px; margin-top: 40px; }
+      .folder-wrapper { transform: scale(1.15); margin: 30px 0; } 
+      
+      .service-card { padding: 40px 25px; }
+      .lore-block { padding: 30px 20px; margin-top: 60px; font-size: 0.8rem; }
+      h2 { margin-bottom: 30px; }
+      
+      footer { padding: 80px 0 40px; }
+    }
 
   </style>
 </head>
 <body>
 
-  <!-- BACKGROUND: DARK VEIL CANVAS -->
   <div class="darkveil-bg">
     <canvas id="darkveil-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
   </div>
@@ -302,16 +330,31 @@
     <a href="#" class="logo">
       <img src="💜-(1)_0001_Níveis-1.png" alt="Creative Editor Logo" style="height: 100%; width: auto;">
     </a>
+    
     <ul class="nav-links">
-      <li><a href="#work">WORK</a></li>
-      <li><a href="#about">SYSTEM</a></li>
-      <li><a href="#assets">ASSETS</a></li>
-      <li><a href="#contact">GET IN TOUCH</a></li>
+      <li><a href="#work" class="scroll-link">WORK</a></li>
+      <li><a href="#about" class="scroll-link">SYSTEM</a></li>
+      <li><a href="#assets" class="scroll-link">ASSETS</a></li>
+      <li><a href="#contact" class="scroll-link">GET IN TOUCH</a></li>
     </ul>
+
+    <div class="menu-toggle" id="mobile-menu-btn">
+      <span class="bar1"></span>
+      <span class="bar2"></span>
+      <span class="bar3"></span>
+    </div>
   </nav>
 
+  <div class="mobile-nav" id="mobile-nav">
+    <ul class="mobile-nav-links">
+      <li><a href="#work" class="scroll-link">WORK</a></li>
+      <li><a href="#about" class="scroll-link">SYSTEM</a></li>
+      <li><a href="#assets" class="scroll-link">ASSETS</a></li>
+      <li><a href="#contact" class="scroll-link">GET IN TOUCH</a></li>
+    </ul>
+  </div>
+
   <main>
-    <!-- HERO -->
     <section id="hero">
       <div class="container">
         <span class="section-label">// CORE ESTABLISHED</span>
@@ -320,7 +363,6 @@
       </div>
     </section>
 
-    <!-- WORK (WEBGL CAROUSEL) -->
     <section id="work" style="padding-bottom: 0;">
       <div class="container">
         <span class="section-label">// RECENT OPERATIONS</span>
@@ -332,7 +374,6 @@
       </div>
     </section>
 
-    <!-- CAPACIDADES -->
     <section id="about">
       <div class="container">
         <span class="section-label">// TECH STACK</span>
@@ -361,7 +402,6 @@
       </div>
     </section>
 
-    <!-- ASSETS / FOLDERS -->
     <section id="assets">
       <div class="container">
         <span class="section-label">// OPEN SOURCE</span>
@@ -369,7 +409,6 @@
         
         <div class="folders-grid">
           
-          <!-- PASTA 1: AE PROJECTS -->
           <div class="folder-wrapper">
             <div class="folder">
               <div class="folder__back">
@@ -391,7 +430,6 @@
             </div>
           </div>
 
-          <!-- PASTA 2: VFX / SFX -->
           <div class="folder-wrapper">
             <div class="folder" style="--folder-color: #444; --folder-back-color: #222;">
               <div class="folder__back">
@@ -413,7 +451,6 @@
             </div>
           </div>
 
-          <!-- PASTA 3: PRESETS -->
           <div class="folder-wrapper">
             <div class="folder" style="--folder-color: #fff; --folder-back-color: #aaa;">
               <div class="folder__back">
@@ -435,12 +472,9 @@
             </div>
           </div>
 
-        </div> <!-- /.folders-grid -->
-        
-      </div>
+        </div> </div>
     </section>
 
-    <!-- CONTACT -->
     <footer id="contact">
       <div class="container">
         <span class="section-label">// CONNECT</span>
@@ -450,7 +484,6 @@
     </footer>
   </main>
 
-  <!-- SCRIPTS GSAP E PASTAS -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       gsap.registerPlugin(ScrollTrigger);
@@ -459,7 +492,6 @@
       gsap.from('.hero-title span', { y: 100, opacity: 0, duration: 1.2, ease: 'power4.out', delay: 0.5 });
       gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 1, ease: 'power3.out', delay: 1.2 });
 
-      // Animação de entrada dos textos das seções
       gsap.utils.toArray('section').forEach(section => {
         if(section.id !== 'hero') {
           gsap.from(section.querySelectorAll('h2, .section-label'), {
@@ -474,19 +506,47 @@
         y: 80, opacity: 0, duration: 1.5, ease: 'power3.out'
       });
 
-      // Animação das pastas aparecendo
       gsap.from('.folder-wrapper', {
         scrollTrigger: { trigger: '#assets', start: 'top 75%' },
         y: 50, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'back.out(1.5)'
       });
 
       // ─────────────────────────────────────────────────────────────
-      // SMOOTH SCROLL CORRIGIDO PARA ENQUADRAMENTO EXATO
+      // LÓGICA DO MENU MOBILE
       // ─────────────────────────────────────────────────────────────
-      document.querySelectorAll('.nav-links a').forEach(anchor => {
+      const mobBtn = document.getElementById('mobile-menu-btn');
+      const mobNav = document.getElementById('mobile-nav');
+      const bar1 = document.querySelector('.bar1');
+      const bar2 = document.querySelector('.bar2');
+      const bar3 = document.querySelector('.bar3');
+
+      function toggleMenu() {
+        mobNav.classList.toggle('active');
+        // Animação brutal do hamburguer
+        if (mobNav.classList.contains('active')) {
+          bar1.style.transform = 'translateY(8px) rotate(45deg)';
+          bar2.style.opacity = '0';
+          bar3.style.transform = 'translateY(-8px) rotate(-45deg)';
+        } else {
+          bar1.style.transform = 'none';
+          bar2.style.opacity = '1';
+          bar3.style.transform = 'none';
+        }
+      }
+
+      mobBtn.addEventListener('click', toggleMenu);
+
+      // ─────────────────────────────────────────────────────────────
+      // SMOOTH SCROLL PARA DESKTOP E MOBILE
+      // ─────────────────────────────────────────────────────────────
+      document.querySelectorAll('.scroll-link').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
           e.preventDefault(); 
           
+          if(window.innerWidth <= 992 && mobNav.classList.contains('active')) {
+            toggleMenu(); // Fecha o menu se tiver no mobile
+          }
+
           const targetId = this.getAttribute('href');
           if (targetId === '#') return;
           const targetSection = document.querySelector(targetId);
@@ -496,21 +556,14 @@
             let offsetPosition = 0;
 
             if (targetId === '#work') {
-              // Se clicar em WORK, centraliza exatamente o carrossel (escondendo o título acima)
               const gallery = document.querySelector('.gallery-wrapper');
               const elementPosition = gallery.getBoundingClientRect().top;
               const availableHeight = window.innerHeight - headerHeight;
               const centerOffset = (availableHeight - gallery.offsetHeight) / 2;
-              
               offsetPosition = elementPosition + window.pageYOffset - headerHeight - (centerOffset > 0 ? centerOffset : 0);
             } else {
-              // Para SYSTEM e ASSETS: 
-              // Mira na div interna '.container' pra ignorar o padding-top de 140px.
               const innerContainer = targetSection.querySelector('.container');
               const elementPosition = (innerContainer || targetSection).getBoundingClientRect().top;
-              
-              // O '- 40' deixa exatos 40 pixels de distância entre o header preto e o título branco,
-              // garantindo que não suba demais na tela.
               offsetPosition = elementPosition + window.pageYOffset - headerHeight - 40; 
             }
         
@@ -522,19 +575,18 @@
         });
       });
 
-      // Lógica magnética das pastas E lógica de Acordeão (Fecha as outras)
+      // ─────────────────────────────────────────────────────────────
+      // PASTAS (MAGNETIC & ACCORDION)
+      // ─────────────────────────────────────────────────────────────
       const folders = document.querySelectorAll('.folder');
 
       folders.forEach(folder => {
         folder.addEventListener('click', () => {
-          // Fecha todas as outras pastas que não sejam a pasta clicada
           folders.forEach(otherFolder => {
             if (otherFolder !== folder) {
               otherFolder.classList.remove('open');
             }
           });
-          
-          // Abre/fecha a pasta clicada
           folder.classList.toggle('open');
         });
 
@@ -542,6 +594,9 @@
         papers.forEach((paper) => {
           paper.addEventListener('mousemove', (e) => {
             if (!folder.classList.contains('open')) return;
+            // Desativa efeito magnético em tela pequena porque touch não tem hover real
+            if(window.innerWidth <= 992) return; 
+
             const rect = paper.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
@@ -564,7 +619,6 @@
     });
   </script>
 
-  <!-- WEBGL: DARK VEIL BACKGROUND (Adaptado do React Bits) -->
   <script type="module">
     import { Renderer, Program, Mesh, Triangle, Vec2 } from 'https://esm.sh/ogl';
 
@@ -626,29 +680,20 @@
     void mainImage(out vec4 fragColor,in vec2 fragCoord){
         vec2 uv=fragCoord/uResolution.xy*2.-1.;
         uv.y*=-1.;
-        // Aplica o Warp no shader
         uv+=uWarp*vec2(sin(uv.y*6.283+uTime*0.5),cos(uv.x*6.283+uTime*0.5))*0.05;
         fragColor=cppn_fn(uv,0.1*sin(0.3*uTime),0.1*sin(0.69*uTime),0.1*sin(0.44*uTime));
     }
 
     void main(){
         vec4 col;mainImage(col,gl_FragCoord.xy);
-        
-        // Hue shift
         col.rgb=hueShiftRGB(col.rgb,uHueShift);
-        
-        // Scanlines
         float scanline_val=sin(gl_FragCoord.y*uScanFreq)*0.5+0.5;
         col.rgb*=1.-(scanline_val*scanline_val)*uScan;
-        
-        // Grain / Noise
         col.rgb+=(rand(gl_FragCoord.xy+uTime)-0.5)*uNoise;
-        
         gl_FragColor=vec4(clamp(col.rgb,0.0,1.0),1.0);
     }
     `;
 
-    // Função de inicialização do Background
     function initDarkVeil(canvasId) {
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
@@ -661,7 +706,6 @@
       const gl = renderer.gl;
       const geometry = new Triangle(gl);
 
-      // PARÂMETROS DO EFEITO AQUI:
       const hueShift = 0;           
       const noiseIntensity = 0.08;  
       const scanlineIntensity = 0.3;
@@ -707,7 +751,6 @@
       loop();
     }
 
-    // WEBGL CIRCULAR GALLERY
     import { Camera as GalCamera, Mesh as GalMesh, Plane as GalPlane, Program as GalProgram, Renderer as GalRenderer, Texture as GalTexture, Transform as GalTransform, Raycast as GalRaycast, Vec2 as GalVec2 } from 'https://esm.sh/ogl';
 
     function debounceGal(func, wait) {
@@ -734,26 +777,20 @@
     function createTextTextureGal(gl, text, font = 'bold 30px sans-serif', color = 'black') {
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
-      
-      // FIX: Lógica blindada para extrair o tamanho da fonte (para evitar falhas com palavras como "bold")
       const sizeMatch = font.match(/\d+/);
       const fontSize = sizeMatch ? parseInt(sizeMatch[0], 10) : 30;
       const textHeight = Math.ceil(fontSize * 1.2);
-      
       context.font = font;
       const metrics = context.measureText(text);
       const textWidth = Math.ceil(metrics.width);
-      
       canvas.width = textWidth + 20;
       canvas.height = textHeight + 20;
-      
       context.font = font;
       context.fillStyle = color;
       context.textBaseline = 'middle';
       context.textAlign = 'center';
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.fillText(text, canvas.width / 2, canvas.height / 2);
-      
       const texture = new GalTexture(gl, { generateMipmaps: false });
       texture.image = canvas;
       return { texture, width: canvas.width, height: canvas.height };
@@ -803,12 +840,7 @@
         const textHeight = this.plane.scale.y * 0.15;
         const textWidth = textHeight * aspect;
         this.mesh.scale.set(textWidth, textHeight, 1);
-        
-        // FIX: Move o título pra CIMA da thumb em vez de baixo
-        // Antes estava: -this.plane.scale.y * 0.5 - textHeight * 0.5 - 0.05
-        // Agora está:  +this.plane.scale.y * 0.5 + textHeight * 0.5 + 0.05
         this.mesh.position.y = this.plane.scale.y * 0.5 + textHeight * 0.5 + 0.05;
-        
         this.mesh.setParent(this.plane);
       }
     }
@@ -831,9 +863,7 @@
         this.textColor = textColor;
         this.borderRadius = borderRadius;
         this.font = font;
-        
         this.texture = new GalTexture(this.gl, { generateMipmaps: true });
-
         this.createShader();
         this.createMesh();
         this.createTitle();
@@ -904,7 +934,6 @@
           },
           transparent: true
         });
-
         const img = new Image();
         img.crossOrigin = 'anonymous';
         img.onload = () => {
@@ -929,10 +958,8 @@
       }
       update(scroll, direction) {
         this.plane.position.x = this.x - scroll.current - this.extra;
-
         const x = this.plane.position.x;
         const H = this.viewport.width / 2;
-
         if (this.bend === 0) {
           this.plane.position.y = 0;
           this.plane.rotation.z = 0;
@@ -940,7 +967,6 @@
           const B_abs = Math.abs(this.bend);
           const R = (H * H + B_abs * B_abs) / (2 * B_abs);
           const effectiveX = Math.min(Math.abs(x), H);
-
           const arc = R - Math.sqrt(R * R - effectiveX * effectiveX);
           if (this.bend > 0) {
             this.plane.position.y = -arc;
@@ -950,11 +976,9 @@
             this.plane.rotation.z = Math.sign(x) * Math.asin(effectiveX / R);
           }
         }
-
         this.speed = scroll.current - scroll.last;
         this.program.uniforms.uTime.value += 0.04;
         this.program.uniforms.uSpeed.value = this.speed;
-
         const planeOffset = this.plane.scale.x / 2;
         const viewportOffset = this.viewport.width / 2;
         this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
@@ -977,13 +1001,10 @@
           }
         }
         this.scale = this.screen.height / 1500;
-        
         const baseWidth = 1000; 
         this.plane.scale.x = (this.viewport.width * (baseWidth * this.scale)) / this.screen.width;
         this.plane.scale.y = this.plane.scale.x * (9 / 16); 
-
         this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
-        
         this.padding = this.plane.scale.x * 0.1; 
         this.width = this.plane.scale.x + this.padding;
         this.widthTotal = this.width * this.length;
@@ -997,14 +1018,11 @@
         this.scrollSpeed = scrollSpeed;
         this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
         this.onCheckDebounce = debounceGal(this.onCheck.bind(this), 200);
-        
         this.createRenderer();
         this.createCamera();
         this.createScene();
-        
         this.raycast = new GalRaycast(this.gl);
         this.mouse = new GalVec2();
-
         this.onResize();
         this.createGeometry();
         this.createMedias(items, bend, textColor, borderRadius, font);
@@ -1029,7 +1047,7 @@
         this.planeGeometry = new GalPlane(this.gl, { heightSegments: 50, widthSegments: 100 });
       }
       createMedias(items, bend = 1, textColor, borderRadius, font) {
-        this.mediasImages = items.concat(items); // Loop
+        this.mediasImages = items.concat(items);
         this.medias = this.mediasImages.map((data, index) => {
           return new GalMedia({
             geometry: this.planeGeometry,
@@ -1066,31 +1084,24 @@
         this.isDown = false;
         const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
         const y = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
-
         const moveX = Math.abs(x - this.start);
         const moveY = Math.abs(y - this.startY);
-
         if (moveX < 5 && moveY < 5) {
           const rect = this.gl.canvas.getBoundingClientRect();
           const mouseX = ((x - rect.left) / rect.width) * 2 - 1;
           const mouseY = -((y - rect.top) / rect.height) * 2 + 1;
-          
           this.mouse.set(mouseX, mouseY);
           this.raycast.castMouse(this.camera, this.mouse);
-          
           const meshes = this.medias.map(m => m.plane);
           const hits = this.raycast.intersectBounds(meshes);
-
           if (hits.length > 0) {
             const hitMesh = hits[0];
             const clickedMedia = this.medias.find(m => m.plane === hitMesh);
-            
             if (clickedMedia && clickedMedia.link) {
               window.open(clickedMedia.link, '_blank');
             }
           }
         }
-        
         this.onCheck();
       }
       onWheel(e) {
@@ -1106,10 +1117,7 @@
         this.scroll.target = this.scroll.target < 0 ? -item : item;
       }
       onResize() {
-        this.screen = {
-          width: this.container.clientWidth,
-          height: this.container.clientHeight
-        };
+        this.screen = { width: this.container.clientWidth, height: this.container.clientHeight };
         this.renderer.setSize(this.screen.width, this.screen.height);
         this.camera.perspective({ aspect: this.screen.width / this.screen.height });
         const fov = (this.camera.fov * Math.PI) / 180;
@@ -1137,9 +1145,7 @@
         this.boundOnTouchMove = this.onTouchMove.bind(this);
         this.boundOnTouchUp = this.onTouchUp.bind(this);
         window.addEventListener('resize', this.boundOnResize);
-        
         this.container.addEventListener('wheel', this.boundOnWheel, { passive: true });
-        
         this.gl.canvas.addEventListener('mousedown', this.boundOnTouchDown);
         this.gl.canvas.addEventListener('mousemove', this.boundOnTouchMove);
         window.addEventListener('mouseup', this.boundOnTouchUp);
@@ -1150,10 +1156,8 @@
     }
 
     window.addEventListener('load', () => {
-      // 1. Inicia o Fundo (DarkVeil)
       initDarkVeil('darkveil-canvas');
 
-      // 2. Inicia o Carrossel
       const container = document.getElementById('circular-gallery');
       const myProjects = [
         { image: 'airbnb.png', text: 'hyo - airbnb', link: 'https://www.youtube.com/watch?v=LJbFmxFRlDs' },
