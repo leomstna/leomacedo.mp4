@@ -9,15 +9,12 @@
   <title>leomacedo.mp4 | Creative Editor & Motion Graphics</title>
   <meta name="description" content="Portfolio de Leo Macedo - Edição de vídeo, Motion Graphics e VFX." />
 
-  <!-- Fonts: Inter & Inter Tight -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Inter+Tight:wght@700;800;900&family=Space+Mono&display=swap" rel="stylesheet" />
   
-  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- GSAP & Plugins -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 
@@ -492,9 +489,6 @@
 </head>
 <body>
 
-  <!-- ============================================
-       NAV
-  ============================================ -->
   <nav>
     <div class="nav-inner">
       <a href="#" class="logo-wordmark" aria-label="leomacedo.mp4">
@@ -505,14 +499,12 @@
         <span class="logo-lab">.mp4</span>
       </a>
       
-      <!-- Desktop Nav -->
       <ul class="nav-links">
         <li><a href="#work" class="scroll-link">WORK</a></li>
         <li><a href="#about" class="scroll-link">SYSTEM</a></li>
         <li><a href="#contact" class="scroll-link">GET IN TOUCH</a></li>
       </ul>
 
-      <!-- Mobile Nav Toggle -->
       <div class="menu-toggle" id="mobile-menu-btn">
         <span></span>
         <span></span>
@@ -521,7 +513,6 @@
     </div>
   </nav>
 
-  <!-- Mobile Overlay Menu -->
   <div class="mobile-nav-overlay" id="mobile-nav">
     <ul class="mobile-nav-links">
       <li><a href="#work" class="scroll-link">WORK</a></li>
@@ -531,9 +522,6 @@
   </div>
 
   <main>
-    <!-- ============================================
-         HERO
-    ============================================ -->
     <section class="hero" id="hero">
       <div class="hero-inner">
         <span class="hero-eyebrow">The Creative Edge &mdash; System Online</span>
@@ -561,9 +549,6 @@
       </div>
     </section>
 
-    <!-- ============================================
-         WORK (WEBGL CAROUSEL)
-    ============================================ -->
     <section class="section section-alt" id="work" style="padding-bottom: 0;">
       <div class="section-inner-narrow">
         <div class="section-header">
@@ -578,9 +563,6 @@
       </div>
     </section>
 
-    <!-- ============================================
-         CAPACIDADES (TECH STACK)
-    ============================================ -->
     <section class="section" id="about">
       <div class="section-inner-narrow">
         <div class="section-header">
@@ -631,9 +613,6 @@
       </div>
     </section>
 
-    <!-- ============================================
-         FOOTER CTA
-    ============================================ -->
     <section class="footer-cta" id="contact">
       <div class="footer-cta-inner">
         <div class="section-label">Connect</div>
@@ -655,7 +634,6 @@
     </section>
   </main>
 
-  <!-- SCRIPTS GSAP E INTERAÇÕES -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       gsap.registerPlugin(ScrollTrigger);
@@ -751,7 +729,6 @@
     });
   </script>
 
-  <!-- WEBGL CIRCULAR GALLERY SCRIPT -->
   <script type="module">
     import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform, Raycast, Vec2 } from 'https://esm.sh/ogl';
 
@@ -813,7 +790,6 @@
         this.textColor = textColor;
         this.font = font;
         
-        // Setup empty mesh initially
         this.baseWidth = 100;
         this.baseHeight = 100;
         this.createMesh();
@@ -873,13 +849,8 @@
         this.borderRadius = borderRadius;
         this.font = font;
         
-        // FIX: generateMipmaps setado pra false garante o funcionamento de imagens "Non Power of Two" (1920x1080)
-        // Isso evita que o WebGL jogue a imagem fora e renderize um quadrado preto.
-        this.texture = new Texture(this.gl, { 
-            generateMipmaps: false,
-            minFilter: this.gl.LINEAR,
-            magFilter: this.gl.LINEAR
-        });
+        // CORREÇÃO: Desligado o generateMipmaps integrado do novo.html
+        this.texture = new Texture(this.gl, { generateMipmaps: false });
 
         this.createShader();
         this.createMesh();
@@ -890,6 +861,7 @@
         this.program = new Program(this.gl, {
           depthTest: false,
           depthWrite: false,
+          // CORREÇÃO: Efeito de onda 3D removido do shader conforme o novo.html
           vertex: `
             precision highp float;
             attribute vec3 position;
@@ -902,7 +874,6 @@
             void main() {
               vUv = uv;
               vec3 p = position;
-              p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.1 + uSpeed * 0.5);
               gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
             }
           `,
@@ -920,32 +891,23 @@
             }
             
             void main() {
-              vec2 ratio = vec2(1.0);
-              // Blindagem matemática: Só calcula proporção se a imagem tiver tamanho real carregado (> 1.0)
-              if (uImageSizes.x > 1.0 && uImageSizes.y > 1.0) {
-                  float planeAspect = uPlaneSizes.x / uPlaneSizes.y;
-                  float imageAspect = uImageSizes.x / uImageSizes.y;
-                  ratio = vec2(
-                    min(planeAspect / imageAspect, 1.0),
-                    min((1.0 / planeAspect) / (1.0 / imageAspect), 1.0)
-                  );
-              }
-              
+              vec2 ratio = vec2(
+                min((uPlaneSizes.x / uPlaneSizes.y) / (uImageSizes.x / uImageSizes.y), 1.0),
+                min((uPlaneSizes.y / uPlaneSizes.x) / (uImageSizes.y / uImageSizes.x), 1.0)
+              );
               vec2 uv = vec2(
                 vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
                 vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
               );
               
-              vec4 color = texture2D(tMap, uv); 
+              vec4 color = vec4(0.0, 0.0, 0.0, 0.0); 
+              if (uImageSizes.x > 0.0) {
+                 color = texture2D(tMap, uv);
+              }
               
               float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
               float edgeSmooth = 0.002;
               float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
-              
-              // Mantém invisível enquanto carrega
-              if (uImageSizes.x <= 1.0) {
-                  alpha = 0.0;
-              }
               
               gl_FragColor = vec4(color.rgb, color.a * alpha);
             }
@@ -953,8 +915,7 @@
           uniforms: {
             tMap: { value: this.texture },
             uPlaneSizes: { value: [0, 0] },
-            // Inicia em 1.0 pra evitar NaN bug
-            uImageSizes: { value: [1.0, 1.0] }, 
+            uImageSizes: { value: [0, 0] }, 
             uSpeed: { value: 0 },
             uTime: { value: 100 * Math.random() },
             uBorderRadius: { value: this.borderRadius }
@@ -963,11 +924,10 @@
         });
 
         const img = new Image();
-        // Recoloquei crossOrigin porque o GitHub Pages em algumas conexões bloqueia texturas no WebGL
-        img.crossOrigin = 'anonymous'; 
+        // Comentado para rodar de boa sem problemas de CORS, igual a correção do novo.html
+        // img.crossOrigin = 'anonymous'; 
         img.onload = () => {
           this.texture.image = img;
-          this.texture.needsUpdate = true; // Força WebGL a mandar a imagem pra placa de video
           this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
         };
         img.src = this.image;
@@ -1044,15 +1004,16 @@
 
         this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
         
-        // --- Atualiza escala e posição do texto de forma blindada ---
         if (this.title && this.title.mesh) {
           const aspect = this.title.baseWidth / this.title.baseHeight;
-          const textHeight = this.plane.scale.y * (isMobile ? 0.15 : 0.12); // Responsivo
+          const textHeight = this.plane.scale.y * (isMobile ? 0.15 : 0.15); 
           const textWidth = textHeight * aspect;
           
           this.title.mesh.scale.set(textWidth, textHeight, 1);
-          // Posição no topo da thumbnail atualizada com base na escala real
-          this.title.mesh.position.y = (this.plane.scale.y * 0.5) + (textHeight * 0.5) + 0.1;
+          
+          // Correção de Z e Y trazida do novo.html pra evitar os textos entrando um no outro
+          this.title.mesh.position.y = this.plane.scale.y * 0.5 + textHeight * 0.5 + 0.05;
+          this.title.mesh.position.z = 0.1; 
         }
 
         this.padding = this.plane.scale.x * (isMobile ? 0.15 : 0.1); 
@@ -1229,12 +1190,12 @@
         { image: 'minhamente.png', text: 'MATEUSXAVIER - MINHAMENTE', link: 'https://www.youtube.com/watch?v=0zZKwwBSiME' },
         { image: 'querubim.png', text: 'HYO - QUERUBIM', link: 'https://www.youtube.com/watch?v=tVFf_r0V468' },
         { image: 'roubanoplayboy.png', text: 'MATEUSXAVIER - ROUBANO PLAYBOY', link: 'https://www.youtube.com/watch?v=3_l8Czgivqw' },
-        { image: 'temaver.png', text: 'DORITOZ - TEM A VER', link: 'https://www.youtube.com/watch?v=ufuXcytH0OU' },
+        { image: 'temaver.png', text: 'DORITOZ - TEM A ver', link: 'https://www.youtube.com/watch?v=ufuXcytH0OU' },
       ];
 
       new App(container, {
         items: myProjects,
-        bend: 2,
+        bend: 0, // <--- Aplicado o fix do novo.html pra deixar reto
         textColor: '#ffffff',
         borderRadius: 8, 
         font: '900 35px "Inter Tight", sans-serif',
