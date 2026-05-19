@@ -9,7 +9,7 @@
   <title>leomacedo.mp4 | Creative Editor & Motion Graphics</title>
   <meta name="description" content="Portfolio de Leo Macedo - Edição de vídeo, Motion Graphics e VFX." />
 
-  <!-- Fonts: Inter & Inter Tight (Based on Wan's Creator Lab) + Space Mono for terminal vibe -->
+  <!-- Fonts: Inter & Inter Tight -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Inter+Tight:wght@700;800;900&family=Space+Mono&display=swap" rel="stylesheet" />
@@ -23,7 +23,7 @@
 
   <style>
     /* ============================================
-       RESET & BASE (Wan's Theme)
+       RESET & BASE 
     ============================================ */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -305,11 +305,11 @@
     .section-sub { font-size: 1.1rem; color: var(--grey-light); line-height: 1.7; max-width: 600px; margin: 0 auto; }
 
     /* ============================================
-       WHAT YOU GET (SERVICES) - FIXED GRID
+       WHAT YOU GET (SERVICES) - AUTO GRID FIXED
     ============================================ */
     .deliverables-grid { 
       display: grid; 
-      grid-template-columns: repeat(3, 1fr); 
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
       gap: 1.5rem; 
       margin-top: 3rem; 
     }
@@ -341,14 +341,17 @@
 
     .deliverable-icon i { color: var(--red); font-size: 1.3rem; }
     .deliverable-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: -0.02em; }
-    .deliverable-desc { font-size: 0.95rem; color: var(--grey-light); line-height: 1.6; }
+    .deliverable-desc { 
+      font-size: 0.95rem; color: var(--grey-light); line-height: 1.6; 
+      flex-grow: 1; 
+    }
 
     /* ============================================
-       SPECS GRID - FIXED GRID
+       SPECS GRID - AUTO GRID FIXED
     ============================================ */
     .specs-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr); 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
       gap: 2rem;
       margin-top: 4rem;
       border-top: 1px solid var(--border);
@@ -463,9 +466,6 @@
       .nav-links { display: none; }
       .menu-toggle { display: flex; }
       .gallery-wrapper { height: 55vh; min-height: 400px; }
-      
-      .deliverables-grid { grid-template-columns: repeat(2, 1fr); }
-      .specs-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 768px) {
@@ -474,6 +474,7 @@
       .logo { height: 35px; }
       
       .hero-title { font-size: clamp(3rem, 15vw, 6rem); }
+      .hero-title .hollow { -webkit-text-stroke: 1px #fff; }
       .hero-sub { font-size: 0.9rem; margin-top: 20px; }
       
       .section-header { margin-bottom: 2.5rem; }
@@ -937,7 +938,7 @@
           uniforms: {
             tMap: { value: this.texture },
             uPlaneSizes: { value: [0, 0] },
-            uImageSizes: { value: [0, 0] },
+            uImageSizes: { value: [0, 0] }, // Restaurado 0,0 pra renderizar com sucesso
             uSpeed: { value: 0 },
             uTime: { value: 100 * Math.random() },
             uBorderRadius: { value: this.borderRadius }
@@ -946,7 +947,7 @@
         });
 
         const img = new Image();
-        img.crossOrigin = 'anonymous';
+        // img.crossOrigin = 'anonymous'; // Removido pra parar de barrar arquivos locais!
         img.onload = () => {
           this.texture.image = img;
           this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
