@@ -4,20 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <link rel="icon" type="image/jpeg" href="favicon.jpg" />
+  <link rel="icon" type="image/jpeg" href="assets/favicon.jpg" />
   
   <title>leomacedo.mp4 | Creative Editor & Motion Graphics</title>
   <meta name="description" content="Portfolio de Leo Macedo - Edição de vídeo, Motion Graphics e VFX." />
 
-  <!-- Fonts: Inter & Inter Tight -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Inter+Tight:wght@700;800;900&family=Space+Mono&display=swap" rel="stylesheet" />
   
-  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- GSAP & Plugins -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 
@@ -418,6 +415,57 @@
     }
 
     /* ============================================
+       PITCH VIDEO SECTION (WANS LAB STYLE)
+    ============================================ */
+    #pitch-video {
+      background: #050505;
+      border-top: 1px solid var(--border);
+    }
+    .pitch-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .pitch-eyebrow {
+      font-family: 'Inter Tight', sans-serif;
+      color: var(--grey-light);
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    .pitch-title {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .video-container {
+      max-width: 850px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(192, 38, 211, 0.3);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 40px rgba(192, 38, 211, 0.15);
+      background: #000;
+    }
+    .video-container video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      outline: none;
+    }
+    .pitch-footer-text {
+      text-align: center;
+      color: var(--grey-light);
+      font-size: 0.95rem;
+      max-width: 600px;
+      margin: 2.5rem auto 0;
+      line-height: 1.6;
+    }
+
+    /* ============================================
        FOOTER CTA
     ============================================ */
     .footer-cta {
@@ -474,6 +522,7 @@
       .logo { height: 35px; }
       
       .hero-title { font-size: clamp(3rem, 15vw, 6rem); }
+      .hero-title .hollow { -webkit-text-stroke: 1px #fff; }
       .hero-sub { font-size: 0.9rem; margin-top: 20px; }
       
       .section-header { margin-bottom: 2.5rem; }
@@ -491,9 +540,6 @@
 </head>
 <body>
 
-  <!-- ============================================
-       NAV
-  ============================================ -->
   <nav>
     <div class="nav-inner">
       <a href="#" class="logo-wordmark" aria-label="leomacedo.mp4">
@@ -504,14 +550,12 @@
         <span class="logo-lab">.mp4</span>
       </a>
       
-      <!-- Desktop Nav -->
       <ul class="nav-links">
         <li><a href="#work" class="scroll-link">WORK</a></li>
         <li><a href="#about" class="scroll-link">SYSTEM</a></li>
         <li><a href="#contact" class="scroll-link">GET IN TOUCH</a></li>
       </ul>
 
-      <!-- Mobile Nav Toggle -->
       <div class="menu-toggle" id="mobile-menu-btn">
         <span></span>
         <span></span>
@@ -520,7 +564,6 @@
     </div>
   </nav>
 
-  <!-- Mobile Overlay Menu -->
   <div class="mobile-nav-overlay" id="mobile-nav">
     <ul class="mobile-nav-links">
       <li><a href="#work" class="scroll-link">WORK</a></li>
@@ -530,9 +573,6 @@
   </div>
 
   <main>
-    <!-- ============================================
-         HERO
-    ============================================ -->
     <section class="hero" id="hero">
       <div class="hero-inner">
         <span class="hero-eyebrow">The Creative Edge &mdash; System Online</span>
@@ -560,9 +600,6 @@
       </div>
     </section>
 
-    <!-- ============================================
-         WORK (WEBGL CAROUSEL)
-    ============================================ -->
     <section class="section section-alt" id="work" style="padding-bottom: 0;">
       <div class="section-inner-narrow">
         <div class="section-header">
@@ -577,9 +614,6 @@
       </div>
     </section>
 
-    <!-- ============================================
-         CAPACIDADES (TECH STACK)
-    ============================================ -->
     <section class="section" id="about">
       <div class="section-inner-narrow">
         <div class="section-header">
@@ -630,9 +664,23 @@
       </div>
     </section>
 
-    <!-- ============================================
-         FOOTER CTA
-    ============================================ -->
+    <section class="section" id="pitch-video">
+      <div class="section-inner-narrow">
+        <div class="pitch-header">
+          <span class="pitch-eyebrow">Antes de avançares, vê isto.</span>
+          <h2 class="pitch-title">O <span class="highlight">MÉTODO</span> — VÊ ISTO PRIMEIRO</h2>
+        </div>
+        
+        <div class="video-container">
+          <video src="videos/apresentando.mp4" controls preload="metadata"></video>
+        </div>
+        
+        <p class="pitch-footer-text">
+          Esta é a apresentação brutal de como a magia acontece. Vê o vídeo até ao fim para perceberes o esquema antes de entrares em contacto.
+        </p>
+      </div>
+    </section>
+
     <section class="footer-cta" id="contact">
       <div class="footer-cta-inner">
         <div class="section-label">Connect</div>
@@ -654,7 +702,6 @@
     </section>
   </main>
 
-  <!-- SCRIPTS GSAP E INTERAÇÕES -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       gsap.registerPlugin(ScrollTrigger);
@@ -667,7 +714,7 @@
 
       // Animação blindada contra NodeLists Vazias
       gsap.utils.toArray('section').forEach(section => {
-        if(section.id !== 'hero') {
+        if(section.id !== 'hero' && section.id !== 'pitch-video') {
           const targets = section.querySelectorAll('.section-header *, .footer-cta-inner *');
           if (targets.length > 0) {
             gsap.from(targets, {
@@ -691,6 +738,12 @@
       gsap.from('.spec-item', {
         scrollTrigger: { trigger: '.specs-grid', start: 'top 85%' },
         y: 20, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out'
+      });
+
+      // Animação brutal para o leitor de vídeo
+      gsap.from('.video-container', {
+        scrollTrigger: { trigger: '#pitch-video', start: 'top 75%' },
+        y: 50, opacity: 0, duration: 1, ease: 'power3.out'
       });
 
       // ─────────────────────────────────────────────────────────────
@@ -750,7 +803,6 @@
     });
   </script>
 
-  <!-- WEBGL CIRCULAR GALLERY SCRIPT -->
   <script type="module">
     import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform, Raycast, Vec2 } from 'https://esm.sh/ogl';
 
@@ -918,7 +970,6 @@
             
             void main() {
               vec2 ratio = vec2(1.0);
-              // Proteção: apenas ajusta proporção se houver imagem válida carregada
               if (uImageSizes.x > 1.0 && uImageSizes.y > 1.0) {
                   float planeAspect = uPlaneSizes.x / uPlaneSizes.y;
                   float imageAspect = uImageSizes.x / uImageSizes.y;
@@ -933,17 +984,15 @@
                 vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
               );
               
-              // Fundo de carregamento cinza (se a imagem bugar ou estiver carregando, vc vai ver esse fundo)
-              vec4 color = vec4(0.15, 0.15, 0.15, 1.0); 
-              
-              // Só desenha a textura se ela realmente estiver lá
-              if (uImageSizes.x > 1.0) {
-                 color = texture2D(tMap, uv);
-              }
+              vec4 color = texture2D(tMap, uv); 
               
               float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
               float edgeSmooth = 0.002;
               float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
+              
+              if (uImageSizes.x <= 1.0) {
+                  alpha = 0.0;
+              }
               
               gl_FragColor = vec4(color.rgb, color.a * alpha);
             }
@@ -951,7 +1000,7 @@
           uniforms: {
             tMap: { value: this.texture },
             uPlaneSizes: { value: [0, 0] },
-            uImageSizes: { value: [1.0, 1.0] }, // Proteção ativada
+            uImageSizes: { value: [1.0, 1.0] }, 
             uSpeed: { value: 0 },
             uTime: { value: 100 * Math.random() },
             uBorderRadius: { value: this.borderRadius }
@@ -960,10 +1009,11 @@
         });
 
         const img = new Image();
+        img.crossOrigin = 'anonymous'; 
         img.onload = () => {
           this.texture.image = img;
           this.texture.needsUpdate = true; 
-          this.program.uniforms.uImageSizes.value = [img.naturalWidth || 1.0, img.naturalHeight || 1.0];
+          this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
         };
         img.src = this.image;
       }
@@ -1039,14 +1089,12 @@
 
         this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
         
-        // --- Atualiza escala e posição do texto de forma blindada ---
         if (this.title && this.title.mesh) {
           const aspect = this.title.baseWidth / this.title.baseHeight;
-          const textHeight = this.plane.scale.y * (isMobile ? 0.15 : 0.12); // Responsivo
+          const textHeight = this.plane.scale.y * (isMobile ? 0.15 : 0.12); 
           const textWidth = textHeight * aspect;
           
           this.title.mesh.scale.set(textWidth, textHeight, 1);
-          // Posição no topo da thumbnail atualizada com base na escala real
           this.title.mesh.position.y = (this.plane.scale.y * 0.5) + (textHeight * 0.5) + 0.1;
         }
 
@@ -1095,7 +1143,7 @@
         this.planeGeometry = new Plane(this.gl, { heightSegments: 50, widthSegments: 100 });
       }
       createMedias(items, bend = 1, textColor, borderRadius, font) {
-        this.mediasImages = items.concat(items); // Loop
+        this.mediasImages = items.concat(items); 
         this.medias = this.mediasImages.map((data, index) => {
           return new Media({
             geometry: this.planeGeometry,
@@ -1218,13 +1266,13 @@
     window.addEventListener('load', () => {
       const container = document.getElementById('circular-gallery');
       const myProjects = [
-        { image: 'airbnb.png', text: 'HYO - AIRBNB', link: 'https://www.youtube.com/watch?v=LJbFmxFRlDs' },
-        { image: 'encruzilhada.png', text: 'ZINNZ - ENCRUZILHADA', link: 'https://www.youtube.com/watch?v=MirhuBalAeg' },
-        { image: 'falsa.png', text: 'ZINNZ - FALSA', link: 'https://www.youtube.com/watch?v=J0DLgvq7MxE' },
-        { image: 'minhamente.png', text: 'MATEUSXAVIER - MINHAMENTE', link: 'https://www.youtube.com/watch?v=0zZKwwBSiME' },
-        { image: 'querubim.png', text: 'HYO - QUERUBIM', link: 'https://www.youtube.com/watch?v=tVFf_r0V468' },
-        { image: 'roubanoplayboy.png', text: 'MATEUSXAVIER - ROUBANO PLAYBOY', link: 'https://www.youtube.com/watch?v=3_l8Czgivqw' },
-        { image: 'temaver.png', text: 'DORITOZ - TEM A VER', link: 'https://www.youtube.com/watch?v=ufuXcytH0OU' },
+        { image: 'assets/airbnb.png', text: 'HYO - AIRBNB', link: 'https://www.youtube.com/watch?v=LJbFmxFRlDs' },
+        { image: 'assets/encruzilhada.png', text: 'ZINNZ - ENCRUZILHADA', link: 'https://www.youtube.com/watch?v=MirhuBalAeg' },
+        { image: 'assets/falsa.png', text: 'ZINNZ - FALSA', link: 'https://www.youtube.com/watch?v=J0DLgvq7MxE' },
+        { image: 'assets/minhamente.png', text: 'MATEUSXAVIER - MINHAMENTE', link: 'https://www.youtube.com/watch?v=0zZKwwBSiME' },
+        { image: 'assets/querubim.png', text: 'HYO - QUERUBIM', link: 'https://www.youtube.com/watch?v=tVFf_r0V468' },
+        { image: 'assets/roubanoplayboy.png', text: 'MATEUSXAVIER - ROUBANO PLAYBOY', link: 'https://www.youtube.com/watch?v=3_l8Czgivqw' },
+        { image: 'assets/temaver.png', text: 'DORITOZ - TEM A VER', link: 'https://www.youtube.com/watch?v=ufuXcytH0OU' },
       ];
 
       new App(container, {
