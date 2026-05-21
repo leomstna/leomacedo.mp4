@@ -1097,7 +1097,7 @@
         this.scale = this.screen.height / 1500;
         
         const isMobile = window.innerWidth <= 768;
-        const baseWidth = isMobile ? 800 : 1000; 
+        const baseWidth = isMobile ? 900 : 1300; 
         this.plane.scale.x = (this.viewport.width * (baseWidth * this.scale)) / this.screen.width;
         this.plane.scale.y = this.plane.scale.x * (9 / 16); 
 
@@ -1113,7 +1113,7 @@
           this.title.mesh.scale.set(textWidth, textHeight, 1);
           
           // Reduz drasticamente o espaçamento vertical entre a thumb e o texto
-          this.title.mesh.position.y = (this.plane.scale.y * 0.5) + (textHeight * 0.5) + 0.02;
+          this.title.mesh.position.y = (this.plane.scale.y * 0.5) + (textHeight * 0.5) + 0.01;
         }
 
         this.padding = this.plane.scale.x * (isMobile ? 0.15 : 0.1); 
