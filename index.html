@@ -803,8 +803,16 @@
     });
   </script>
 
+  <script type="importmap">
+  {
+    "imports": {
+      "ogl": "https://cdn.jsdelivr.net/npm/ogl@1.0.7/src/index.js"
+    }
+  }
+  </script>
+
   <script type="module">
-    import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform, Raycast, Vec2 } from 'https://esm.sh/ogl';
+    import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform, Raycast, Vec2 } from 'ogl';
 
     function debounce(func, wait) {
       let timeout;
