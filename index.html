@@ -1272,6 +1272,8 @@
 
     window.addEventListener('load', () => {
       const container = document.getElementById('circular-gallery');
+      // Aguarda 2 frames para garantir que o layout está pintado e o container tem dimensões reais
+      requestAnimationFrame(() => requestAnimationFrame(() => {
       const myProjects = [
         { image: 'assets/airbnb.png', text: 'HYO - AIRBNB', link: 'https://www.youtube.com/watch?v=LJbFmxFRlDs' },
         { image: 'assets/encruzilhada.png', text: 'ZINNZ - ENCRUZILHADA', link: 'https://www.youtube.com/watch?v=MirhuBalAeg' },
@@ -1282,15 +1284,18 @@
         { image: 'assets/temaver.png', text: 'DORITOZ - TEM A VER', link: 'https://www.youtube.com/watch?v=ufuXcytH0OU' },
       ];
 
-      new App(container, {
-        items: myProjects,
-        bend: 2,
-        textColor: '#ffffff',
-        borderRadius: 8, 
-        font: '900 35px "Inter Tight", sans-serif',
-        scrollSpeed: 2.5,
-        scrollEase: 0.05
-      });
+        const app = new App(container, {
+          items: myProjects,
+          bend: 2,
+          textColor: '#ffffff',
+          borderRadius: 8,
+          font: '900 35px "Inter Tight", sans-serif',
+          scrollSpeed: 2.5,
+          scrollEase: 0.05
+        });
+        // Força resize explícito após init para garantir dimensões corretas
+        app.onResize();
+      }));
     });
   </script>
 </body>
