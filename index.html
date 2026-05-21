@@ -1071,8 +1071,12 @@
 
         const planeOffset = this.plane.scale.x / 2;
         const viewportOffset = this.viewport.width / 2;
-        this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
-        this.isAfter = this.plane.position.x - planeOffset > viewportOffset;
+        
+        // Cria um buffer extra (largura de 1.5 cards) para garantir que ele só soma/subtrai depois que sumir 100% da tela
+        const buffer = this.plane.scale.x * 1.5;
+        
+        this.isBefore = this.plane.position.x + planeOffset < -viewportOffset - buffer;
+        this.isAfter = this.plane.position.x - planeOffset > viewportOffset + buffer;
         if (direction === 'right' && this.isBefore) {
           this.extra -= this.widthTotal;
           this.isBefore = this.isAfter = false;
