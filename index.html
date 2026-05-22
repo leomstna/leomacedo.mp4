@@ -1103,17 +1103,24 @@
 
         this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
         
-        if (this.title && this.title.mesh) {
+          if (this.title && this.title.mesh) {
           const aspect = this.title.baseWidth / this.title.baseHeight;
           
-          // Aumenta a proporção da altura do texto (era 0.15 e 0.12)
-          const textHeight = this.plane.scale.y * (isMobile ? 0.25 : 0.25); 
-          const textWidth = textHeight * aspect;
+          // 1. Altura do texto. 0.25 significa que a altura do texto será 25% da altura da thumb.
+          const localTextHeight = isMobile ? 0.3 : 0.25; 
           
-          this.title.mesh.scale.set(textWidth, textHeight, 1);
+          // 2. Compensa o achatamento (porque sua thumb é 16:9 retangular, e não um quadrado perfeito)
+          const parentAspect = 9 / 16; 
+          const localTextWidth = localTextHeight * parentAspect * aspect;
           
-          // Reduz drasticamente o espaçamento vertical entre a thumb e o texto
-          this.title.mesh.position.y = 0.5 + (textHeight * 0.5) + 0.08;
+          this.title.mesh.scale.set(localTextWidth, localTextHeight, 1);
+          
+          // 3. Posiciona o texto:
+          // 0.5 = topo exato da thumb.
+          // (localTextHeight * 0.5) = puxa o ponto de ancoragem pro meio do texto pra ele não ficar cortado.
+          // gap = distância entre o texto e a thumb.
+          const gap = 0.05; 
+          this.title.mesh.position.y = 0.5 + (localTextHeight * 0.5) + gap;
         }
 
         this.padding = this.plane.scale.x * (isMobile ? 0.15 : 0.1); 
