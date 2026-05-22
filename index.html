@@ -316,13 +316,19 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 2.5rem 2rem;
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      /* Deixamos apenas a cor da borda aqui para não brigar com o GSAP */
+      transition: border-color 0.2s ease; 
       display: flex;
       flex-direction: column;
       height: 100%; 
     }
 
-    .deliverable-card:hover { border-color: rgba(192, 38, 211, 0.4); transform: translateY(-5px); }
+    .deliverable-card:hover { 
+      border-color: rgba(192, 38, 211, 0.4); 
+      transform: translateY(-5px); 
+      /* A transição suave do movimento agora só ativa quando você passa o mouse */
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
 
     .deliverable-icon {
       width: 50px;
@@ -441,7 +447,7 @@
       letter-spacing: 1px;
     }
     .video-container {
-      max-width: 850px;
+      max-width: 340px; /* O culpado é esse cara aqui */
       margin: 0 auto;
       border-radius: 12px;
       overflow: hidden;
@@ -649,11 +655,11 @@
           </div>
           <div class="spec-item">
             <span class="spec-label"><i class="fa-solid fa-laptop-code"></i> Software</span>
-            <span class="spec-value">AE, PR, CAPCUT, PS, ELEMENT 3D</span>
+            <span class="spec-value">AfterEffects, Premiere, CapCut, Photoshop</span>
           </div>
           <div class="spec-item">
-            <span class="spec-label"><i class="fa-solid fa-location-dot"></i> Base</span>
-            <span class="spec-value">Feira de Santana, BA</span>
+            <span class="spec-label"><i class="fa-solid fa-location-dot"></i> From</span>
+            <span class="spec-value">Bahia, BRAZIL</span>
           </div>
           <div class="spec-item">
             <span class="spec-label"><i class="fa-solid fa-wifi"></i> Status</span>
@@ -667,8 +673,8 @@
     <section class="section" id="pitch-video">
       <div class="section-inner-narrow">
         <div class="pitch-header">
-          <span class="pitch-eyebrow">Antes de avançares, vê isto.</span>
-          <h2 class="pitch-title">O <span class="highlight">MÉTODO</span> — VÊ ISTO PRIMEIRO</h2>
+          <span class="pitch-eyebrow">Before you move on, watch this.</span>
+          <h2 class="pitch-title">THE <span class="highlight">METHOD</span> — WATCH THIS FIRST</h2>
         </div>
         
         <div class="video-container">
@@ -676,7 +682,7 @@
         </div>
         
         <p class="pitch-footer-text">
-          Esta é a apresentação brutal de como a magia acontece. Vê o vídeo até ao fim para perceberes o esquema antes de entrares em contacto.
+          This is the brutal presentation of how the magic happens. Watch the video until the end to understand the scheme before getting in touch.
         </p>
       </div>
     </section>
@@ -732,7 +738,8 @@
       
       gsap.from('.deliverable-card', {
         scrollTrigger: { trigger: '#about', start: 'top 75%' },
-        y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out'
+        y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out',
+        clearProps: 'all'
       });
       
       gsap.from('.spec-item', {
@@ -1048,10 +1055,9 @@
         const H = this.viewport.width / 2;
 
         if (this.bend === 0) {
-          // Desloca o card para baixo para abrir espaço pro texto no teto
-          // Se ainda cortar, aumente o valor negativo (ex: -1.8, -2.0)
-          this.plane.position.y = window.innerWidth <= 768 ? -0.8 : -1.5; 
-          this.plane.rotation.z = 1;
+          // Valores bem menores agora, só pra compensar a altura do texto
+          this.plane.position.y = window.innerWidth <= 768 ? -0.2 : -0.3; 
+          this.plane.rotation.z = 0;
         } else {
           const B_abs = Math.abs(this.bend);
           const R = (H * H + B_abs * B_abs) / (2 * B_abs);
@@ -1100,18 +1106,23 @@
         this.scale = this.screen.height / 1500;
         
         const isMobile = window.innerWidth <= 768;
-        const baseWidth = isMobile ? 900 : 1000; 
+        // 1. MATE O 3700. Troque por 1000 para o objeto caber na tela.
+        const baseWidth = isMobile ? 900 : 3000
         this.plane.scale.x = (this.viewport.width * (baseWidth * this.scale)) / this.screen.width;
         this.plane.scale.y = this.plane.scale.x * (9 / 16); 
 
         this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
         
-          if (this.title && this.title.mesh) {
+        if (this.title && this.title.mesh) {
+          // ==========================================
           // ==========================================
           // VARIÁVEIS DE CONTROLE
           // ==========================================
-          const tamanhoTextoY = isMobile ? 0.25 : 0.50; // Controla a ALTURA. 0.20 = 20% da altura da thumb.
-          const espacamento = 0.005; // Distância do texto pra thumb.
+          const tamanhoTextoY = isMobile ? 0.25 : 0.80; 
+          
+          // Use um valor NEGATIVO para ignorar a margem transparente e colar o texto.
+          // Vá testando -0.1, -0.15, -0.2 até encostar onde você quer.
+          const espacamento = -0.25; 
           // ==========================================
 
           const aspect = this.title.baseWidth / this.title.baseHeight;
@@ -1298,13 +1309,13 @@
       // Aguarda 2 frames para garantir que o layout está pintado e o container tem dimensões reais
       requestAnimationFrame(() => requestAnimationFrame(() => {
       const myProjects = [
-        { image: 'assets/airbnb.png', text: 'HYO - AIRBNB', link: 'https://www.youtube.com/watch?v=LJbFmxFRlDs' },
-        { image: 'assets/encruzilhada.png', text: 'ZINNZ - ENCRUZILHADA', link: 'https://www.youtube.com/watch?v=MirhuBalAeg' },
-        { image: 'assets/falsa.png', text: 'ZINNZ - FALSA', link: 'https://www.youtube.com/watch?v=J0DLgvq7MxE' },
-        { image: 'assets/minhamente.png', text: 'MATEUSXAVIER - MINHAMENTE', link: 'https://www.youtube.com/watch?v=0zZKwwBSiME' },
-        { image: 'assets/querubim.png', text: 'HYO - QUERUBIM', link: 'https://www.youtube.com/watch?v=tVFf_r0V468' },
-        { image: 'assets/roubanoplayboy.png', text: 'MATEUSXAVIER - ROUBANO PLAYBOY', link: 'https://www.youtube.com/watch?v=3_l8Czgivqw' },
-        { image: 'assets/temaver.png', text: 'DORITOZ - TEM A VER', link: 'https://www.youtube.com/watch?v=ufuXcytH0OU' },
+        { image: 'assets/airbnb.png', text: 'Hyo - Airbnb', link: 'https://www.youtube.com/watch?v=LJbFmxFRlDs' },
+        { image: 'assets/encruzilhada.png', text: 'Zinnz - Encruzilhada', link: 'https://www.youtube.com/watch?v=MirhuBalAeg' },
+        { image: 'assets/falsa.png', text: 'Zinnz - Falsa', link: 'https://www.youtube.com/watch?v=J0DLgvq7MxE' },
+        { image: 'assets/minhamente.png', text: 'MateusXavier - Minhamente', link: 'https://www.youtube.com/watch?v=0zZKwwBSiME' },
+        { image: 'assets/querubim.png', text: 'Hyo - Querubim', link: 'https://www.youtube.com/watch?v=tVFf_r0V468' },
+        { image: 'assets/roubanoplayboy.png', text: 'MateusXavier - Roubano Playboy', link: 'https://www.youtube.com/watch?v=3_l8Czgivqw' },
+        { image: 'assets/temaver.png', text: 'Doritoz - Tem a ver', link: 'https://www.youtube.com/watch?v=ufuXcytH0OU' },
       ];
 
         const app = new App(container, {
