@@ -1105,22 +1105,23 @@
         
           if (this.title && this.title.mesh) {
           // ==========================================
-          // VARIÁVEIS DE CONTROLE PARA VOCÊ AJUSTAR
+          // VARIÁVEIS DE CONTROLE
           // ==========================================
-          const tamanhoTexto = 0.8;  // 0.8 = Ocupa 80% da largura da thumb. (Teste 1.0 ou mais para vazar as bordas)
-          const espacamento = 0.05;  // Distância do texto pra thumb. (0.01 gruda, 0.1 afasta)
+          const tamanhoTextoY = isMobile ? 0.25 : 0.50; // Controla a ALTURA. 0.20 = 20% da altura da thumb.
+          const espacamento = 0.005; // Distância do texto pra thumb.
           // ==========================================
 
           const aspect = this.title.baseWidth / this.title.baseHeight;
           
-          // A mágica acontece aqui: ancoramos a escala no eixo X (largura) 
-          // e compensamos o achatamento do card (16/9) no eixo Y.
-          const scaleX = tamanhoTexto; 
-          const scaleY = scaleX / aspect * (16 / 9); 
+          // Travamos a altura (scaleY) pra fonte ficar uniforme em todos os cards
+          const scaleY = tamanhoTextoY;
+          
+          // A largura (scaleX) se adapta ao texto e compensa a distorção 16:9 do card pai
+          const scaleX = scaleY * aspect * (9 / 16); 
           
           this.title.mesh.scale.set(scaleX, scaleY, 1);
           
-          // 0.5 crava na borda. Somamos metade da altura do texto para o eixo centralizar, e aplicamos seu espaçamento.
+          // Posiciona e aplica o espaçamento
           this.title.mesh.position.y = 0.5 + (scaleY * 0.5) + espacamento;
         }
 
