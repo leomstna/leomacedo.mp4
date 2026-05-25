@@ -765,8 +765,9 @@
           const targets = section.querySelectorAll('.section-header *, .footer-cta-inner *');
           if (targets.length > 0) {
             gsap.from(targets, {
-              scrollTrigger: { trigger: section, start: 'top 80%' },
-              y: 30, opacity: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out'
+              scrollTrigger: { trigger: section, start: 'top 95%' },
+              y: 30, opacity: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out',
+              clearProps: 'all'
             });
           }
         }
