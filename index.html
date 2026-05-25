@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <link rel="icon" type="image/jpeg" href="assets/favicon.jpg" />
+  <link rel="icon" type="image/jpeg" href="favicon.jpg" />
   
   <title>leomacedo.mp4 | Creative Editor & Motion Graphics</title>
   <meta name="description" content="Portfolio de Leo Macedo - Edição de vídeo, Motion Graphics e VFX." />
@@ -837,13 +837,13 @@
   <script type="importmap">
   {
     "imports": {
-      "ogl": "https://cdn.jsdelivr.net/npm/ogl/dist/ogl.mjs"
+      "ogl": "https://cdn.jsdelivr.net/npm/ogl@1.0.6/dist/ogl.mjs"
     }
   }
   </script>
   
   <script type="module">
-    import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform, Raycast, Vec2, Triangle } from 'ogl';
+    import { Camera, Geometry, Mesh, Plane, Program, Renderer, Texture, Transform, Raycast, Vec2 } from 'ogl';
 
     /* ============================================
        INTEGRATING DARKVEIL BACKGROUND SHADER
@@ -935,7 +935,10 @@
         width: '100%', height: '100%', display: 'block'
       });
 
-      const geometry = new Triangle(gl);
+      const geometry = new Geometry(gl, {
+        position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
+        uv:       { size: 2, data: new Float32Array([0, 0, 2, 0, 0, 2]) },
+      });
       const program = new Program(gl, {
         vertex: darkVeilVertex,
         fragment: darkVeilFragment,
