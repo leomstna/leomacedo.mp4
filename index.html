@@ -561,25 +561,28 @@
       .gallery-wrapper { height: 55vh; min-height: 400px; }
     }
 
-    @media (max-width: 768px) {
-      .section { padding: 4rem 1.2rem; }
-      nav { padding: 0 5%; height: 80px; }
-      .logo { height: 35px; }
-      
-      .hero-headline { font-size: clamp(3rem, 15vw, 6rem); }
-      .hero-sub { font-size: 0.9rem; margin-top: 20px; }
-      
-      .section-header { margin-bottom: 2.5rem; }
-      
-      .deliverables-grid { grid-template-columns: 1fr; gap: 1rem; }
-      .deliverable-card { padding: 2rem 1.5rem; }
-      .deliverable-title { font-size: 1.2rem; }
-      .deliverable-desc { font-size: 0.9rem; }
-      
-      .specs-grid { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 2rem; margin-top: 3rem; }
-      
-      .footer-cta { padding: 5rem 1.2rem; }
-    }
+  @media (max-width: 768px) {
+    .section { padding: 4rem 1rem; }
+    nav { padding: 0 5%; height: 70px; }
+    .logo-wordmark { font-size: 1.2rem; }
+    
+    /* Ajuste das fontes principais pra não quebrar a tela */
+    .hero-headline { font-size: clamp(2.5rem, 12vw, 4rem); line-height: 1; }
+    .script-text { font-size: clamp(2rem, 8vw, 3rem); top: -0.8em; left: 5%; }
+    .hero-sub { font-size: 0.95rem; margin-top: 15px; padding: 0 10px; }
+    
+    /* Galeria circular menor no celular */
+    .gallery-wrapper { height: 60vh; min-height: 350px; }
+    
+    .deliverables-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+    .specs-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+    
+    /* Vídeo ajustado pras bordas do celular */
+    .video-container { max-width: 100%; border-radius: 12px; }
+    
+    .footer-cta { padding: 4rem 1rem; }
+    .btn-xl { padding: 1rem 1.5rem; font-size: 1rem; width: 100%; display: block; }
+  }
   </style>
 </head>
 <body>
