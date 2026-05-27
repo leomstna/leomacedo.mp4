@@ -271,7 +271,7 @@
       transition: all 0.3s ease-out; display: flex; flex-direction: column;
       height: 100%; position: relative; overflow: hidden;
       will-change: transform, border-color, box-shadow;
-      cursor: pointer; /* Adicionado para mobile entender que clica */
+      cursor: pointer;
     }
     .deliverable-card::before {
       content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
@@ -292,7 +292,6 @@
       pointer-events: none;
     }
     
-    /* Efeitos unificados para hover (desktop) e active (mobile) */
     .deliverable-card:hover, .deliverable-card.active { 
       border-color: rgba(192, 38, 211, 0.4); transform: translateY(-5px); 
       box-shadow: 0 15px 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(192, 38, 211, 0.02);
@@ -626,11 +625,9 @@
         });
       });
 
-      // SCRIPT DOS VIDEOS NOS CARDS DE SERVIÇO ATUALIZADO PRA MOBILE
       document.querySelectorAll('.deliverable-card').forEach(card => {
         const vid = card.querySelector('.card-bg-video');
         if(vid) {
-          // Hover pro desktop
           card.addEventListener('mouseenter', () => {
             if(window.innerWidth > 768) {
               vid.play().catch(e => console.log('Autoplay bloqueado', e));
@@ -642,19 +639,14 @@
             }
           });
           
-          // Click pra mobile (toca o vídeo da vez e pausa os outros)
           card.addEventListener('click', () => {
             if(window.innerWidth <= 768) {
               const isPlaying = !vid.paused;
-              
-              // Limpa todos primeiro
               document.querySelectorAll('.deliverable-card').forEach(c => {
                 c.classList.remove('active');
                 const v = c.querySelector('.card-bg-video');
                 if(v) v.pause();
               });
-
-              // Toca o atual se ele estava pausado
               if(!isPlaying) {
                 card.classList.add('active');
                 vid.play().catch(e => console.log('Mobile play bloqueado', e));
@@ -673,9 +665,6 @@
   <script type="module">
     import { Camera, Geometry, Mesh, Plane, Program, Renderer, Texture, Transform, Raycast, Vec2 } from 'ogl';
 
-    /* ============================================
-       INTEGRATING DARKVEIL BACKGROUND SHADER
-    ============================================ */
     const darkVeilVertex = `attribute vec2 position; void main(){gl_Position=vec4(position,0.0,1.0);}`;
     const darkVeilFragment = `
     #ifdef GL_ES
@@ -763,9 +752,6 @@
       loop();
     }
 
-    /* ============================================
-       WEBGL GALLERY CORE
-    ============================================ */
     function debounce(func, wait) {
       let timeout;
       return function (...args) { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait); };
@@ -985,10 +971,9 @@
         this.plane.scale.x = (this.viewport.width * (baseWidth * this.scale)) / this.screen.width; this.plane.scale.y = this.plane.scale.x * (9 / 16); 
         this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
         
-        // AQUI FOI AJUSTADO O TITULO (MUDANÇA DO ESPAÇAMENTO PRA VALORES POSITIVOS)
         if (this.title && this.title.mesh) {
-          const tamanhoTextoY = isMobile ? 1.00 : 0.80; 
-          const espacamento = isMobile ? - 0.25 : - 0.20; // Positivo faz o texto subir pra cima da thumb
+          const tamanhoTextoY = isMobile ? 1.90 : 0.80; 
+          const espacamento = isMobile ? -0.25 : -0.20; 
           const aspect = this.title.baseWidth / this.title.baseHeight;
           const scaleY = tamanhoTextoY; const scaleX = scaleY * aspect * (9 / 16); 
           this.title.mesh.scale.set(scaleX, scaleY, 1); 
@@ -1075,17 +1060,31 @@
         const fov = (this.camera.fov * Math.PI) / 180; const height = 2 * Math.tan(fov / 2) * this.camera.position.z; const width = height * this.camera.aspect; this.viewport = { width, height };
         if (this.medias) { this.medias.forEach(media => media.onResize({ screen: this.screen, viewport: this.viewport })); }
       }
+      
       update() {
         if (this.isVisible) {
           this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease); const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
           
-          if (Math.abs(this.scroll.current - this.scroll.last) > 0.5) {
+          if (Math.abs(this.scroll.current - this.scroll.last) > 0.1) {
               if (this.hoveredMedia) {
                   this.hoveredMedia.stopPreview();
                   this.hoveredMedia = null;
               }
-          } else if (this.hoveredMedia) {
-              if (performance.now() - this.hoverTimer > 2000 && !this.hoveredMedia.isPreviewing) {
+          } else {
+              if (window.innerWidth <= 768 && !this.hoveredMedia && this.medias) {
+                  let closest = null;
+                  let minDx = Infinity;
+                  this.medias.forEach(m => {
+                      let dx = Math.abs(m.plane.position.x);
+                      if (dx < minDx) { minDx = dx; closest = m; }
+                  });
+                  if (closest && minDx < this.viewport.width * 0.25) {
+                      this.hoveredMedia = closest;
+                      this.hoverTimer = performance.now();
+                  }
+              }
+
+              if (this.hoveredMedia && performance.now() - this.hoverTimer > 2000 && !this.hoveredMedia.isPreviewing) {
                   this.hoveredMedia.startPreview();
               }
           }
@@ -1095,6 +1094,7 @@
         }
         this.raf = window.requestAnimationFrame(this.update.bind(this));
       }
+      
       addEventListeners() {
         this.boundOnResize = this.onResize.bind(this); this.boundOnWheel = this.onWheel.bind(this); this.boundOnTouchDown = this.onTouchDown.bind(this); this.boundOnTouchMove = this.onTouchMove.bind(this); this.boundOnTouchUp = this.onTouchUp.bind(this); this.boundOnMouseMove = this.onMouseMove.bind(this);
         window.addEventListener('resize', this.boundOnResize); this.container.addEventListener('wheel', this.boundOnWheel, { passive: true });
