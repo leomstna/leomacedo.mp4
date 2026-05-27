@@ -577,16 +577,24 @@
           
           if (targetSection) {
             let offsetPosition = 0;
+            
             if (targetId === '#work') {
               const gallery = document.querySelector('.gallery-wrapper');
               const elementPosition = gallery.getBoundingClientRect().top;
               const availableHeight = window.innerHeight - headerHeight;
               const centerOffset = (availableHeight - gallery.offsetHeight) / 2;
               offsetPosition = elementPosition + window.pageYOffset - headerHeight - (centerOffset > 0 ? centerOffset : 0);
+              
+            } else if (targetId === '#about') {
+              // Aqui tá a mágica pro seu print: o + 70 força o scroll a descer mais e focar no texto
+              const elementPosition = targetSection.getBoundingClientRect().top;
+              offsetPosition = elementPosition + window.pageYOffset - headerHeight + 70; 
+              
             } else {
               const elementPosition = targetSection.getBoundingClientRect().top;
               offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20; 
             }
+            
             window.scrollTo({ top: offsetPosition, behavior: "smooth" });
           }
         });
