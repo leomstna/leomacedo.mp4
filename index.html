@@ -850,7 +850,7 @@
       }
     }
 
-    class Media {
+class Media {
       constructor({ geometry, gl, image, index, length, renderer, scene, screen, text, link, folder, viewport, bend, textColor, borderRadius = 0, font }) {
         this.extra = 0; this.geometry = geometry; this.gl = gl; this.image = image; this.index = index;
         this.length = length; this.renderer = renderer; this.scene = scene; this.screen = screen;
@@ -863,8 +863,66 @@
         this.isPreviewing = false;
         this.currentCena = 1;
 
-        this.createShader(); this.createMesh(); this.createTitle(); this.onResize();
+        this.createShader(); 
+        this.createMesh(); 
+        this.createTitle(); 
+        this.setupVideo(); // <- CHAMA AQUI O SETUP DO VÍDEO
+        this.onResize();
       }
+
+      // NOVA FUNÇÃO: Cria o vídeo já no início e carrega só os metadados
+      setupVideo() {
+          if(!this.folder) return;
+          
+          this.video = document.createElement('video');
+          this.video.muted = true;
+          this.video.playsInline = true;
+          this.video.crossOrigin = 'anonymous';
+          this.video.preload = 'metadata'; // ISSO É O SEGREDO
+          this.video.src = `videos/videopreview/${this.folder}/CENA01.mp4`;
+          
+          this.video.addEventListener('ended', () => {
+              if(!this.isPreviewing) return;
+              this.currentCena++;
+              if(this.currentCena > 3) this.currentCena = 1;
+              this.video.src = `videos/videopreview/${this.folder}/CENA0${this.currentCena}.mp4`;
+              this.video.play().catch(e => console.log(e));
+          });
+
+          this.video.addEventListener('loadedmetadata', () => {
+              this.program.uniforms.uVideoSizes.value = [this.video.videoWidth, this.video.videoHeight];
+          });
+      }
+
+      // ... MANTENHA createShader, createMesh, createTitle IGUAIS ...
+
+      startPreview() {
+          if(this.isPreviewing || !this.folder || !this.video) return;
+          this.isPreviewing = true;
+          
+          // O vídeo já existe, só precisamos dar o play
+          this.video.play().then(() => {
+              if(this.isPreviewing) {
+                  gsap.to(this.program.uniforms.uMix, { value: 1, duration: 0.5, ease: "power2.inOut" });
+              }
+          }).catch(e => console.log("Erro preview autoplay:", e));
+      }
+
+      stopPreview() {
+          if(!this.isPreviewing) return;
+          this.isPreviewing = false;
+          gsap.to(this.program.uniforms.uMix, { value: 0, duration: 0.4, ease: "power2.inOut", onComplete: () => {
+              if (this.video) {
+                  this.video.pause();
+                  // Resetar para o início pra próxima vez
+                  this.video.currentTime = 0; 
+                  this.currentCena = 1;
+                  this.video.src = `videos/videopreview/${this.folder}/CENA01.mp4`;
+              }
+          }});
+      }
+      
+      // ... MANTENHA update e onResize IGUAIS ...
 
       createShader() {
         this.program = new Program(this.gl, {
